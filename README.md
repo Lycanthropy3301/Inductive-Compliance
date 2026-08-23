@@ -4,14 +4,14 @@ Inductive Compliance is a noninvasive model for transition-centric policy gating
 
 ## The Process
 
-Here is the basic step-by-step process of how Inductive Compliance works
+Here is the basic step-by-step process of how Inductive Compliance works.
 
 Assume a policy-compliant device in configuration state `A` wants to transition to configuration state `B`
 1. Attestation server tracks abstract state `A`
-1. Device sends a request to the Attestation Server with guarded atomic transition `T` (over context predicate `C`)
-3. After validating T, attestation server signs and sends a token `V` authorizing transition from state `A` to state `B`
-4. Device begins build transition with token `V`, authorized builder confirms `V` is signed and valid, checking both `A` and resultant state `B`
-5. If checks pass, build is successful and Device transitions from `A` to `B`
+2. Device sends a request to the Attestation Server with guarded atomic transition `T`
+3. After validating T, the attestation server signs and sends a token `V` authorizing transition from state `A` to state `B`
+4. Device begins build transition with token `V`. The authorized builder verifies the signed token `V`, checking that the predecessor state matches `A` and the successor state matches `B`
+5. If checks pass, the build is successful and the device transitions from `A` to `B`
 
 ## Explanation of the Proof of Concept
 
