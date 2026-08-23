@@ -1,0 +1,39 @@
+cff-version: 1.2.0
+title: "Inductive Compliance: Lightweight & Noninvasive Transition-Gated Security for Declarative Infrastructure
+message: "If you use this work in research, talks, or derivative implementations, please cite it using the metadata in this file."
+type: software
+authors:
+  - family-names: "Muthuselvan"
+    given-names: "Kavin"
+    alias: "Lycanthropy3301"
+    email: "kavin.muthuselvan@gmail.com"
+repository-code: "https://github.com/Lycanthropy3301/Inductive-Compliance"
+url: "https://github.com/Lycanthropy3301/Inductive-Compliance"
+abstract: >
+  Proof-of-concept implementation and research artifact for Inductive Compliance,
+  a noninvasive model for transition-centric policy gateing for declarative infrastructure.
+  The project explores predecessor-aware authorization of guarded atomic
+  transitions over projected policy-relevant system state, using NixOS as a
+  practical prototype.
+keywords:
+  - NixOS
+  - declarative infrastructure
+  - compliance
+  - fleet security
+  - transition authorization
+  - attestation
+  - noninvasive security
+  - policy enforcement
+license: "Apache-2.0"
+version: "0.1.0"
+date-released: "2026-08-22"
+preferred-citation:
+  type: software
+  authors:
+    - family-names: "Muthuselvan"
+      given-names: "Kavin"
+      alias: "Lycanthropy3301"
+  title: "Inductive Compliance: Proof-of-Concept Model for Noninvasive Transition-Gated Security"
+  version: "0.1.0"
+  date-released: "2026-08-22"
+  url: "https://github.com/Lycanthropy3301/Inductive-Compliance"
