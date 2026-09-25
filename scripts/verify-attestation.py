@@ -5,56 +5,49 @@ import json
 import pathlib
 import sys
 
-from nacl.signing import VerifyKey
 from nacl.exceptions import BadSignatureError
-
-
-def read_text(path):
-    return pathlib.Path(path).read_text().strip()
-
-
-def load_json(path):
-    return json.loads(pathlib.Path(path).read_text())
+from nacl.signing import VerifyKey
 
 
 def fail(msg):
-    print(f"attestation verify failed: {msg}", file=sys.stderr)
+    print(f"attestation verification failed: {msg}", file=sys.stderr)
     sys.exit(1)
+
+
+def load_json_file(path):
+    return json.loads(pathlib.Path(path).read_text())
+
+
+def load_text(path):
+    return pathlib.Path(path).read_text().strip()
+
+
+def canonical_json(obj):
+    return json.dumps(obj, sort_keys=True, separators=(",", ":"))
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--attestation", required=True)
     ap.add_argument("--public-key", required=True)
-    ap.add_argument("--trusted-current-root", required=True)
-    ap.add_argument("--candidate-root", required=True)
-    ap.add_argument("--projected-config", required=True)
     ap.add_argument("--device-id", required=True)
+    ap.add_argument("--projected-config", required=True)
     args = ap.parse_args()
 
-    att = load_json(args.attestation)
-    trusted_current_root = read_text(args.trusted_current_root)
-    candidate_root = read_text(args.candidate_root)
-    expected_device_id = args.device_id
+    att = load_json_file(args.attestation)
+    local_projected = load_json_file(args.projected_config)
+    pubkey_b64 = load_text(args.public_key)
 
-    for key in ["device_id", "currentRoot", "nextRoot", "payload", "signature"]:
+    required = ["device_id", "projected_config", "payload", "signature"]
+    for key in required:
         if key not in att:
-            fail(f"missing field {key}")
+            fail(f"missing field: {key}")
 
-    if att["device_id"] != expected_device_id:
-        fail(f"device_id mismatch: expected {expected_device_id}, got {att['device_id']}")
-
-    if att["currentRoot"] != trusted_current_root:
+    if att["device_id"] != args.device_id:
         fail(
-            f"currentRoot mismatch: trusted={trusted_current_root} attestation={att['currentRoot']}"
+            f"device_id mismatch: expected {args.device_id}, got {att['device_id']}"
         )
 
-    if att["nextRoot"] != candidate_root:
-        fail(
-            f"nextRoot mismatch: candidate={candidate_root} attestation={att['nextRoot']}"
-        )
-
-    pubkey_b64 = read_text(args.public_key)
     try:
         verify_key = VerifyKey(base64.b64decode(pubkey_b64))
     except Exception as e:
@@ -64,7 +57,7 @@ def main():
     try:
         sig = base64.b64decode(att["signature"])
     except Exception as e:
-        fail(f"invalid base64 signature: {e}")
+        fail(f"invalid signature encoding: {e}")
 
     try:
         verify_key.verify(payload, sig)
@@ -74,13 +67,18 @@ def main():
     try:
         payload_obj = json.loads(att["payload"])
     except Exception as e:
-        fail(f"payload is not valid JSON: {e}")
+        fail(f"invalid payload JSON: {e}")
 
-    for key in ["device_id", "currentRoot", "nextRoot"]:
+    for key in ["device_id", "projected_config"]:
         if payload_obj.get(key) != att.get(key):
             fail(f"payload/top-level mismatch on {key}")
 
-    print("attestation verify ok")
+    if canonical_json(att["projected_config"]) != canonical_json(local_projected):
+        fail(
+            "local projected config does not match attested projected config"
+        )
+
+    print("attestation verification successful")
 
 
 if __name__ == "__main__":
