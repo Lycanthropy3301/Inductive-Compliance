@@ -22,4 +22,4 @@ curl -fsS -X POST \
 
 install -m 0644 "$tmp" "$dest"
 
-sudo nixos-rebuild switch --flake "/etc/nixos#${host}" --impure
+sudo nixos-rebuild switch --impure

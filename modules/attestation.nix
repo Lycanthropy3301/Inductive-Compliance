@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.my.attestation;
+  cfg = config.attestation;
 
   inherit (lib)
     mkEnableOption
@@ -41,7 +41,7 @@ let
     set -euo pipefail
 
     ${pkgs.python3.withPackages (pack: [ pack.pynacl ])}/bin/python \
-      ${../scripts/verify_attestation_poc.py} \
+      ${../scripts/verify-attestation.py} \
       --attestation ${lib.escapeShellArg cfg.attestationFile} \
       --public-key ${lib.escapeShellArg cfg.publicKeyFile} \
       --device-id ${lib.escapeShellArg cfg.deviceId} \
@@ -49,7 +49,7 @@ let
   '';
 in
 {
-  options.my.attestation = {
+  options.attestation = {
     enable = mkEnableOption "PoC config attestation verification";
 
     deviceId = mkOption {
@@ -72,7 +72,7 @@ in
     assertions = [
       {
         assertion = cfg.deviceId != "";
-        message = "my.attestation.deviceId must be set";
+        message = "attestation.deviceId must be set";
       }
     ];
 

@@ -1,0 +1,23 @@
+{
+  "attestation": {
+    "deviceId": "demo device",
+    "enable": true,
+    "projectionVersion": 1
+  },
+  "networking": {
+    "firewall": {
+      "allowedTCPPorts": [
+        22,
+        80
+      ],
+      "enable": false
+    }
+  },
+  "services": {
+    "openssh": {
+      "enable": true,
+      "passwordAuthentication": true,
+      "permitRootLogin": "yes"
+    }
+  }
+}

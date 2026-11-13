@@ -74,6 +74,8 @@ def main():
             fail(f"payload/top-level mismatch on {key}")
 
     if canonical_json(att["projected_config"]) != canonical_json(local_projected):
+        print(canonical_json(local_projected))
+        print(canonical_json(att["projected_config"]))
         fail(
             "local projected config does not match attested projected config"
         )

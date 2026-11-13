@@ -1,0 +1,41 @@
+127.0.0.1 - - [25/Sep/2026 21:41:11] "POST /attestation HTTP/1.1" 400 -
+Listening on http://127.0.0.1:8000
+
+=== Attestation Request ===
+device_id   : demo device
+transition  : text=text
+current val : <unset>
+next val    : 'text'
+===========================
+Approve? [y/N] Traceback (most recent call last):
+  File "/etc/nixos/Inductive-Compliance/scripts/./attestation-server.py", line 198, in <module>
+    main()
+    ~~~~^^
+  File "/etc/nixos/Inductive-Compliance/scripts/./attestation-server.py", line 194, in main
+    server.serve_forever()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/nix/store/cg87hb1s008zfh66nd5n9lr5chl40wxq-python3-3.13.15-env/lib/python3.13/socketserver.py", line 240, in serve_forever
+    self._handle_request_noblock()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/nix/store/cg87hb1s008zfh66nd5n9lr5chl40wxq-python3-3.13.15-env/lib/python3.13/socketserver.py", line 318, in _handle_request_noblock
+    self.process_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/cg87hb1s008zfh66nd5n9lr5chl40wxq-python3-3.13.15-env/lib/python3.13/socketserver.py", line 349, in process_request
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/cg87hb1s008zfh66nd5n9lr5chl40wxq-python3-3.13.15-env/lib/python3.13/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/cg87hb1s008zfh66nd5n9lr5chl40wxq-python3-3.13.15-env/lib/python3.13/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/nix/store/cg87hb1s008zfh66nd5n9lr5chl40wxq-python3-3.13.15-env/lib/python3.13/http/server.py", line 451, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/nix/store/cg87hb1s008zfh66nd5n9lr5chl40wxq-python3-3.13.15-env/lib/python3.13/http/server.py", line 439, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/etc/nixos/Inductive-Compliance/scripts/./attestation-server.py", line 156, in do_POST
+    approve = input("Approve? [y/N] ").strip().lower() == "y"
+              ~~~~~^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
